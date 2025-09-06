@@ -1,7 +1,7 @@
 import Link from "next/link";
 
+import { Button } from "~/components/ui/button";
 import { HydrateClient } from "~/trpc/server";
-import { Button } from "~/components/ui/button"
 
 export default async function Home() {
 	return (
@@ -36,7 +36,6 @@ export default async function Home() {
 						</Link>
 
 						<Button>Click me</Button>
-
 					</div>
 				</div>
 			</main>
