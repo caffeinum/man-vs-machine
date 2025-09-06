@@ -2,9 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Octokit } from "octokit";
 
 export const useGithub = (token: string | null) => {
-	return useQuery({
-		queryFn: () => new Octokit({ auth: token }),
-		queryKey: ["github-auth", token],
-		enabled: !!token,
-	});
+  const { data: octokit } = useQuery({
+    queryFn: () => new Octokit({ auth: token }),
+    queryKey: ["github-auth", token],
+    enabled: !!token,
+  });
+
+  return octokit;
 };

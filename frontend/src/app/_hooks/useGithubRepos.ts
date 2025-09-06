@@ -4,17 +4,18 @@ import { useGithubFakeAuth } from "./useGithubFakeAuth";
 
 export const useGithubRepos = () => {
   const authToken = useGithubFakeAuth();
-
-  const { data: octokit } = useGithub(authToken);
+  const octokit = useGithub(authToken);
 
   return useQuery({
     queryFn: async () => {
-      if (!octokit) throw new Error();
-      const { data: repos } = await octokit.rest.repos.listForUser();
+      if (!octokit) throw new Error("Cant list repos");
+
+      const { data: repos } =
+        await octokit.rest.repos.listForAuthenticatedUser();
 
       return repos;
     },
-    queryKey: ["github-auth", authToken],
+    queryKey: ["github-repos", authToken],
     enabled: !!authToken,
   });
 };
