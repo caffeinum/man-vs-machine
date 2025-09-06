@@ -6,7 +6,7 @@ import { Form } from "./Form";
 export function GithubFakeAuth() {
 	const { store, value: token } = useLocalStorage("GITHUB_TOKEN");
 
-	const user = useGithubUser();
+	const { data: user } = useGithubUser();
 
 	if (!token)
 		return (
