@@ -96,11 +96,7 @@ function Header() {
 					</Button> */}
 					<div className="hidden border-r md:inline" />
 
-					{!user ? (
-						<OAuthButton type="sign-in" provider="github" />
-					) : (
-						<UserButton />
-					)}
+					<UserButton />
 				</div>
 				<div className="flex w-12 shrink items-end justify-end lg:hidden">
 					<Button variant="ghost" onClick={() => setOpen(!isOpen)}>
