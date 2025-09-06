@@ -1,5 +1,6 @@
 "use client";
 
+import { OAuthButton, UserButton, useUser } from "@stackframe/stack";
 import { Menu, MoveRight, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -13,7 +14,9 @@ import {
 	NavigationMenuTrigger,
 } from "~/components/ui/navigation-menu";
 
-function Header1() {
+function Header() {
+	const user = useUser();
+
 	const navigationItems = [
 		{
 			title: "Home",
@@ -21,48 +24,12 @@ function Header1() {
 			description: "",
 		},
 		{
-			title: "Product",
-			description: "Managing a small business today is already tough.",
-			items: [
-				{
-					title: "Reports",
-					href: "/reports",
-				},
-				{
-					title: "Statistics",
-					href: "/statistics",
-				},
-				{
-					title: "Dashboards",
-					href: "/dashboards",
-				},
-				{
-					title: "Recordings",
-					href: "/recordings",
-				},
-			],
-		},
-		{
-			title: "Company",
-			description: "Managing a small business today is already tough.",
-			items: [
-				{
-					title: "About us",
-					href: "/about",
-				},
-				{
-					title: "Fundraising",
-					href: "/fundraising",
-				},
-				{
-					title: "Investors",
-					href: "/investors",
-				},
-				{
-					title: "Contact us",
-					href: "/contact",
-				},
-			],
+			title: "Board",
+			href: "/kanban",
+			description:
+				"Managing a small business today is already tough. Use AI Agents.",
+			// placeholder to fill in later with agents
+			items: Array<{ subItem: string; title: string; href: string }>(),
 		},
 	];
 
@@ -121,15 +88,19 @@ function Header1() {
 					</NavigationMenu>
 				</div>
 				<div className="flex lg:justify-center">
-					<p className="font-semibold">TWBlocks</p>
+					<p className="font-semibold">Kanban Agents</p>
 				</div>
 				<div className="flex w-full justify-end gap-4">
-					<Button variant="ghost" className="hidden md:inline">
+					{/* <Button variant="ghost" className="hidden md:inline">
 						Book a demo
-					</Button>
+					</Button> */}
 					<div className="hidden border-r md:inline" />
-					<Button variant="outline">Sign in</Button>
-					<Button>Get started</Button>
+
+					{!user ? (
+						<OAuthButton type="sign-in" provider="github" />
+					) : (
+						<UserButton />
+					)}
 				</div>
 				<div className="flex w-12 shrink items-end justify-end lg:hidden">
 					<Button variant="ghost" onClick={() => setOpen(!isOpen)}>
@@ -174,4 +145,4 @@ function Header1() {
 	);
 }
 
-export { Header1 };
+export { Header };
