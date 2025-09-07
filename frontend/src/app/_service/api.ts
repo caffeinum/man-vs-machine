@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { CreateAgentSchema, HealthSchema, IssuesSchema } from "./schemas";
 
-export const API_URL = "http://localhost:8080";
+// export const API_URL = "http://localhost:8080";
+export const API_URL = "https://agents-kanban-production.up.railway.app";
 
 export const getHealth = async () => {
 	const data = await getAPI("GET", "/health");
