@@ -1,9 +1,9 @@
 "use client";
 
 import { Alert } from "~/components/ui/alert";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useGithubRepos } from "../_hooks/useGithubRepos";
 import { GithubFakeAuth } from "./GithubFakeAuth";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 export default function RepoSelector() {
 	const { data: repos, error } = useGithubRepos();
@@ -16,18 +16,18 @@ export default function RepoSelector() {
 			{!repos?.length && <Alert>No repos access</Alert>}
 
 			{repos?.length && (
-				<ul className="divide-y space-y-3 max-w-lg">
+				<ul className="max-w-lg space-y-3 divide-y">
 					{repos.map((repo) => (
 						<li
 							key={repo.id}
-							className="px-4 py-5 duration-150 hover:border-white hover:rounded-xl hover:bg-gray-50"
+							className="px-4 py-5 duration-150 hover:rounded-xl hover:border-white hover:bg-gray-50"
 						>
 							<a
 								href={`/${repo.owner.login}/${repo.name}`}
 								className="space-y-3"
 							>
 								<div className="flex items-center gap-x-3">
-									<div className="bg-white w-14 h-14 border rounded-full flex items-center justify-center">
+									<div className="flex h-14 w-14 items-center justify-center rounded-full border bg-white">
 										<Avatar className="h-4 w-4 shrink-0">
 											<AvatarImage src={repo.owner.avatar_url} />
 
@@ -37,27 +37,27 @@ export default function RepoSelector() {
 										</Avatar>
 									</div>
 									<div>
-										<span className="block text-sm text-indigo-600 font-medium">
+										<span className="block font-medium text-indigo-600 text-sm">
 											@{repo.owner.login}
 										</span>
-										<h3 className="text-base text-gray-800 font-semibold mt-1">
+										<h3 className="mt-1 font-semibold text-base text-gray-800">
 											{repo.full_name}
 										</h3>
 									</div>
 								</div>
 								<p className="text-gray-600 sm:text-sm">{repo.description}</p>
-								<div className="text-sm text-gray-600 flex items-center gap-6">
+								<div className="flex items-center gap-6 text-gray-600 text-sm">
 									<span className="flex items-center gap-2">
 										{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 										<svg
-											className="w-5 h-5 text-gray-500"
+											className="h-5 w-5 text-gray-500"
 											viewBox="0 0 20 20"
 											fill="none"
 											xmlns="http://www.w3.org/2000/svg"
 										>
 											<path
-												fill-rule="evenodd"
-												clip-rule="evenodd"
+												fillRule="evenodd"
+												clipRule="evenodd"
 												d="M6 6V5C6 3.34315 7.34315 2 9 2H11C12.6569 2 14 3.34315 14 5V6H16C17.1046 6 18 6.89543 18 8V11.5708C15.5096 12.4947 12.8149 12.9999 10 12.9999C7.18514 12.9999 4.49037 12.4947 2 11.5707V8C2 6.89543 2.89543 6 4 6H6ZM8 5C8 4.44772 8.44772 4 9 4H11C11.5523 4 12 4.44772 12 5V6H8V5ZM9 10C9 9.44772 9.44772 9 10 9H10.01C10.5623 9 11.01 9.44772 11.01 10C11.01 10.5523 10.5623 11 10.01 11H10C9.44772 11 9 10.5523 9 10Z"
 												fill="#9CA3AF"
 											/>
@@ -71,14 +71,14 @@ export default function RepoSelector() {
 									<span className="flex items-center gap-2">
 										{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 										<svg
-											className="w-5 h-5 text-gray-500"
+											className="h-5 w-5 text-gray-500"
 											viewBox="0 0 20 20"
 											fill="none"
 											xmlns="http://www.w3.org/2000/svg"
 										>
 											<path
-												fill-rule="evenodd"
-												clip-rule="evenodd"
+												fillRule="evenodd"
+												clipRule="evenodd"
 												d="M5.05025 4.05025C7.78392 1.31658 12.2161 1.31658 14.9497 4.05025C17.6834 6.78392 17.6834 11.2161 14.9497 13.9497L10 18.8995L5.05025 13.9497C2.31658 11.2161 2.31658 6.78392 5.05025 4.05025ZM10 11C11.1046 11 12 10.1046 12 9C12 7.89543 11.1046 7 10 7C8.89543 7 8 7.89543 8 9C8 10.1046 8.89543 11 10 11Z"
 												fill="#9CA3AF"
 											/>
