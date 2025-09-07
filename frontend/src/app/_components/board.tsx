@@ -11,8 +11,9 @@ import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent } from "~/components/ui/card";
+import { HealthCheck } from "./HealthCheck";
 
-interface Task {
+export interface Task {
 	id: string;
 	title: string;
 	description?: string;
@@ -27,112 +28,18 @@ interface Task {
 	comments?: number;
 }
 
-interface Column {
+export interface Column {
 	id: string;
 	title: string;
 	tasks: Task[];
 	color?: string;
 }
 
-const sampleData: Column[] = [
-	{
-		id: "todo",
-		title: "To Do",
-		color: "#8B7355",
-		tasks: [
-			{
-				id: "1",
-				title: "Design System Audit",
-				description: "Review and update component library",
-				priority: "high",
-				assignee: {
-					name: "Sarah Chen",
-					avatar: "/headshot/Lummi Doodle 02.png",
-				},
-				tags: ["Design", "System"],
-				dueDate: "2024-01-15",
-				attachments: 3,
-				comments: 7,
-			},
-			{
-				id: "2",
-				title: "User Research Analysis",
-				description: "Analyze feedback from recent user interviews",
-				priority: "medium",
-				assignee: {
-					name: "Alex Rivera",
-					avatar: "/headshot/Lummi Doodle 04.png",
-				},
-				tags: ["Research", "UX"],
-				dueDate: "2024-01-18",
-				comments: 4,
-			},
-		],
-	},
-	{
-		id: "progress",
-		title: "In Progress",
-		color: "#6B8E23",
-		tasks: [
-			{
-				id: "3",
-				title: "Mobile App Redesign",
-				description: "Implementing new navigation patterns",
-				priority: "high",
-				assignee: {
-					name: "Jordan Kim",
-					avatar: "/headshot/Lummi Doodle 06.png",
-				},
-				tags: ["Mobile", "UI"],
-				attachments: 8,
-				comments: 12,
-			},
-		],
-	},
-	{
-		id: "review",
-		title: "Review",
-		color: "#CD853F",
-		tasks: [
-			{
-				id: "4",
-				title: "API Documentation",
-				description: "Complete developer documentation",
-				priority: "medium",
-				assignee: {
-					name: "Maya Patel",
-					avatar: "/headshot/Lummi Doodle 09.png",
-				},
-				tags: ["Documentation", "API"],
-				dueDate: "2024-01-20",
-				comments: 2,
-			},
-		],
-	},
-	{
-		id: "done",
-		title: "Done",
-		color: "#556B2F",
-		tasks: [
-			{
-				id: "5",
-				title: "Landing Page Optimization",
-				description: "Improved conversion rate by 23%",
-				priority: "low",
-				assignee: {
-					name: "Chris Wong",
-					avatar: "/headshot/Lummi Doodle 10.png",
-				},
-				tags: ["Marketing", "Web"],
-				attachments: 2,
-				comments: 8,
-			},
-		],
-	},
-];
-
-export default function KanbanBoard() {
-	const [columns, setColumns] = useState<Column[]>(sampleData);
+export default function KanbanBoard({
+	columnData,
+	onDrop,
+}: { columnData: Column[]; onDrop: (taskId: number) => void }) {
+	const [columns, setColumns] = useState<Column[]>(columnData);
 
 	const handleDragStart = (
 		e: React.DragEvent,
@@ -167,13 +74,16 @@ export default function KanbanBoard() {
 				return col;
 			}),
 		);
+
+		onDrop(task.id);
 	};
 
 	return (
 		<div className="">
 			<div className="mb-8 text-center">
 				<h1 className="mb-2 font-light text-4xl text-neutral-900 dark:text-neutral-100">
-					Kanban Board
+					Kanban Board &nbsp;
+					<HealthCheck />
 				</h1>
 				<p className="text-neutral-700 dark:text-neutral-300">
 					Drag and drop task management
