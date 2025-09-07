@@ -15,8 +15,6 @@ export default async function Home() {
 					</h1>
 
 					<RepoSelector />
-
-					<SignIn />
 				</div>
 			</main>
 		</HydrateClient>
