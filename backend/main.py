@@ -1,4 +1,4 @@
-import asyncio
+from claude_code_sdk import ClaudeSDKClient, ClaudeCodeOptions
 from fastapi import FastAPI, Request, Query, Header, Depends, status
 
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
