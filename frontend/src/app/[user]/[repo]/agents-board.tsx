@@ -92,7 +92,7 @@ export function AgentsBoard({ user, repo }: { user: string; repo: string }) {
 				issues?.map(
 					(issue) =>
 						({
-							id: issue.id.toString(),
+							id: issue.number.toString(),
 							title: issue.title,
 						}) satisfies Task,
 				) ?? [],
