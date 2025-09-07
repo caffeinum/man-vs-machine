@@ -4,43 +4,10 @@ import { useMutation } from "@tanstack/react-query";
 import KanbanBoard, { type Column, type Task } from "~/app/_components/board";
 import { useIssues } from "~/app/_hooks/useAPI";
 import { createAgent } from "~/app/_service/api";
+import Loading from "~/app/loading";
 import { Alert } from "~/components/ui/alert";
 
-const sampleData: Column[] = [
-	{
-		id: "todo",
-		title: "To Do",
-		color: "#8B7355",
-		tasks: [
-			{
-				id: "1",
-				title: "Design System Audit",
-				description: "Review and update component library",
-				priority: "high",
-				assignee: {
-					name: "Sarah Chen",
-					avatar: "/headshot/Lummi Doodle 02.png",
-				},
-				tags: ["Design", "System"],
-				dueDate: "2024-01-15",
-				attachments: 3,
-				comments: 7,
-			},
-			{
-				id: "2",
-				title: "User Research Analysis",
-				description: "Analyze feedback from recent user interviews",
-				priority: "medium",
-				assignee: {
-					name: "Alex Rivera",
-					avatar: "/headshot/Lummi Doodle 04.png",
-				},
-				tags: ["Research", "UX"],
-				dueDate: "2024-01-18",
-				comments: 4,
-			},
-		],
-	},
+const otherColumns: Column[] = [
 	{
 		id: "progress",
 		title: "In Progress",
@@ -104,7 +71,7 @@ const sampleData: Column[] = [
 ];
 
 export function AgentsBoard({ user, repo }: { user: string; repo: string }) {
-	const { data: issues, error } = useIssues(user, repo);
+	const { data: issues, isPending, error } = useIssues(user, repo);
 
 	console.log("issues", issues);
 
@@ -116,20 +83,22 @@ export function AgentsBoard({ user, repo }: { user: string; repo: string }) {
 		},
 	});
 
-	const columnData: Column[] = sampleData.map((column) => {
-		if (column.id === "todo") {
-			const tasks: Task[] =
+	const columnData: Column[] = [
+		{
+			id: "todo",
+			title: "Backlog (drag to start)",
+			color: "#8B7355",
+			tasks:
 				issues?.map(
 					(issue) =>
 						({
 							id: issue.id.toString(),
 							title: issue.title,
 						}) satisfies Task,
-				) ?? [];
-			return { ...column, tasks: tasks };
-		}
-		return column;
-	});
+				) ?? [],
+		},
+		...otherColumns,
+	];
 
 	const handleDrop = (columnId: string, taskId: number) => {
 		console.log("dragged task", taskId);
@@ -141,6 +110,10 @@ export function AgentsBoard({ user, repo }: { user: string; repo: string }) {
 
 	if (error) {
 		return <Alert>{error.message}</Alert>;
+	}
+
+	if (isPending) {
+		return <Loading />;
 	}
 
 	return (
