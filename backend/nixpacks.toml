@@ -1,0 +1,9 @@
+[phases.setup]
+nixPkgs = ['...', 'nodejs', 'bun']
+
+[phases.build]
+cmds = ['...', 'bun i -g @anthropic-ai/claude-code']
+
+[start]
+paths = ['/app/node_modules/.bin']
+cmd = 'uvicorn main:app --port 8080 --host 0.0.0.0'
