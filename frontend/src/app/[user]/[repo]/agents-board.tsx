@@ -1,7 +1,9 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
 import KanbanBoard, { type Column, type Task } from "~/app/_components/board";
 import { useIssues } from "~/app/_hooks/useAPI";
+import { createAgent } from "~/app/_service/api";
 import { Alert } from "~/components/ui/alert";
 
 const sampleData: Column[] = [
@@ -106,6 +108,14 @@ export function AgentsBoard({ user, repo }: { user: string; repo: string }) {
 
 	console.log("issues", issues);
 
+	const { mutate: startAgent } = useMutation({
+		mutationFn: async (id: number) => {
+			const res = await createAgent(user, repo, id);
+
+			return res;
+		},
+	});
+
 	const columnData: Column[] = sampleData.map((column) => {
 		if (column.id === "todo") {
 			const tasks: Task[] =
@@ -121,13 +131,22 @@ export function AgentsBoard({ user, repo }: { user: string; repo: string }) {
 		return column;
 	});
 
-	const handleDrop = (taskId: number) => {
+	const handleDrop = (columnId: string, taskId: number) => {
 		console.log("dragged task", taskId);
+
+		if (columnId !== "todo") {
+			startAgent(taskId);
+		}
 	};
 
 	if (error) {
 		return <Alert>{error.message}</Alert>;
 	}
 
-	return <KanbanBoard columnData={columnData} onDrop={handleDrop} />;
+	return (
+		<div>
+			<h3>Loaded {issues?.length} issues</h3>
+			<KanbanBoard columnData={columnData} onDrop={handleDrop} />
+		</div>
+	);
 }

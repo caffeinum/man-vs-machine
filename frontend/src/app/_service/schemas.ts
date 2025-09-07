@@ -27,4 +27,6 @@ export const IssuesSchema = z.array(
 	}),
 );
 
+export const CreateAgentSchema = z.unknown();
+
 export type METHOD = "/health" | "/:user/:repo/issues";

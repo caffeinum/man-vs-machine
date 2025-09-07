@@ -1,3 +1,4 @@
+import asyncio
 from fastapi import FastAPI, Request, Query, Header, Depends, status
 
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -82,4 +83,53 @@ def fetch_issues(
 
 
 
+async def summarize_issue(repo_name: str, issue_number: str): 
+    prompt = """
+    You are a summarizer. You will be provided with an issue and your task is to summarize 
+    what the issue is, what files is or will be affected. 
+
+    """
+
+    async with ClaudeSDKClient(
+        options=ClaudeCodeOptions(
+            system_prompt=prompt,
+            allowed_tools=["Bash", "Read", "WebSearch"],
+            max_turns=5
+        )
+    ) as client:
+        query = f"""Analyze the given github issue #{issue_number} in the {repo_name} repository
+        Summarize the content in less than 200 words"""
+        await client.query(query)
+        async for message in client.receive_response():
+            if hasattr(message, 'content'):
+                for block in message.content:
+                    if hasattr(block, 'text'):
+                        print(block.text, end='', flush=True)
+
+
+
+@app.post("/{user}/{repo}/agents/{id}")
+async def create_agent(
+    user: str,
+    repo: str,
+    id: int,
+    cred: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
+    authorization: str | None = Header(None),
+) -> dict:
+    token = extract_token(cred, authorization)
+    repo_name = get_repo_path(user, repo)
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authorization header missing or invalid",
+        )
+
+    # clone repo if not exists
+
+    # cd into the repo
+
+    # Run as script
+    summary = await summarize_issue(repo_name=repo_name,issue_number=id)
+
+    return {"status": "success", "message": summary}
 

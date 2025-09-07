@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { HealthSchema, IssuesSchema } from "./schemas";
+import { CreateAgentSchema, HealthSchema, IssuesSchema } from "./schemas";
 
 export const API_URL = "http://localhost:8080";
 
@@ -13,6 +13,16 @@ export const getIssues = async (user: string, repo: string) => {
 	const response = await getAPI("GET", `/${user}/${repo}/issues`);
 
 	return IssuesSchema.parse(response);
+};
+
+export const createAgent = async (
+	user: string,
+	repo: string,
+	issueId: number,
+) => {
+	const data = await getAPI("POST", `/${user}/${repo}/agents/${issueId}`);
+
+	return CreateAgentSchema.parse(data);
 };
 
 export const getAPI = async (

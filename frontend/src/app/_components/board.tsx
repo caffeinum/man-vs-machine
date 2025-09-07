@@ -38,7 +38,10 @@ export interface Column {
 export default function KanbanBoard({
 	columnData,
 	onDrop,
-}: { columnData: Column[]; onDrop: (taskId: number) => void }) {
+}: {
+	columnData: Column[];
+	onDrop: (columnId: string, taskId: number) => void;
+}) {
 	const [columns, setColumns] = useState<Column[]>(columnData);
 
 	const handleDragStart = (
@@ -75,7 +78,7 @@ export default function KanbanBoard({
 			}),
 		);
 
-		onDrop(task.id);
+		onDrop(targetColumnId, task.id);
 	};
 
 	return (
