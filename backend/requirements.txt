@@ -64,3 +64,5 @@ pytest-xdist>=3.5.0
 
 # Claude Code 
 claude-code-sdk
+PyGithub
+
